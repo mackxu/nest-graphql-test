@@ -2,98 +2,82 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## graphql
+通过模式定义语言 SDL（Schema Definition Language)     
+定义对象和对象之间关系的 schema
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+SDL 是一种在不同平台之间共享模式文件的与语言无关的方式。
 
-## Description
+## @nestjs/graphql
+- GraphQLModule
+- **ObjectType** // marks a class as a GraphQL type
+- **ArgsType** // marks a class as a resolver arguments type 声明参数类，侧重于将多个独立的参数封装成一个类，方便在解析器中使用
+- **InputType** // 对象参数，指定输入类型
+- Args, 定义mutation参数类型
+- Mutation
+- Query
+- Resolver
+- ResolveField
+- GraphQLDefinitionsFactory
+- Scalar 装饰器指定标量类 CustomScalar
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+ApolloServerPluginLandingPageLocalDefault
 
-## Project setup
+graphql 主要是分为 `schema`、`resolver` 两部分。
 
-```bash
-$ pnpm install
-```
+Nest 提供了两种构建 GraphQL 应用的方法：代码优先和模式优先方法。
 
-## Compile and run the project
+在代码优先方法中，使用**装饰器**和 **TypeScript 类**来生成相应的 GraphQL 模式。避免在语言语法之间切换上下文。
 
-```bash
-# development
-$ pnpm run start
+在模式优先方法中，事实来源是 GraphQL SDL（模式定义语言）文件。Nest 基于 **GraphQL 模式**自动生成你的 TypeScript 定义（使用类或接口），以减少编写冗余样板代码的需要。
 
-# watch mode
-$ pnpm run start:dev
+## 代码优先
+**autoSchemaFile** GraphQL schema will be generated automatically。指定位置文件或内存
 
-# production mode
-$ pnpm run start:prod
-```
+`@nestjs/graphql` 包读取通过ts装饰器定义的元数据并自动为你生成模式。
 
-## Run tests
+## Schema优先
+**typePaths** 属性指示 `GraphQLModule` 应在何处查找你将编写的 GraphQL SDL 模式定义文件。
+这些文件将在内存中合并，这允许你将模式拆分为多个文件并将它们定位在它们的*解析器*附近。
 
-```bash
-# unit tests
-$ pnpm run test
+**definitions** 指定自动生成 TypeScript 定义的文件
 
-# e2e tests
-$ pnpm run test:e2e
+建议：实现一个按需构建的脚本，避免每次启动时，生产内容
 
-# test coverage
-$ pnpm run test:cov
-```
+- typePaths
+- definitions { path, outputAs } 动态生成ts
+- watch
+- GraphQLDefinitionsFactory 
+  - generate
+- 
 
-## Deployment
+## nullable
+- items
+- itemsAndList
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 订阅 subscription
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+一种将数据从**服务器**推送到选择收听来自服务器的实时消息的**客户端**的方法。
+订阅类似于*查询*，因为它们指定一组要传递给客户端的字段，
+但不是立即返回单个答案，而是打开一个通道，每次在服务器上发生**特定事件**时将结果发送给客户端 .
 
-```bash
-$ pnpm install -g mau
-$ mau deploy
-```
+订阅的一个常见用例是通知客户端特定事件，例如创建新对象、更新字段等
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+installSubscriptionHandlers 启动订阅
 
-## Resources
+默认类型：Int、Float、String、Boolean 和 ID。自定义原子数据类型（例如，Date）。
 
-Check out a few resources that may come in handy when working with NestJS:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+
+
+
+
+
