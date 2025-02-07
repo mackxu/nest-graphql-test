@@ -17,7 +17,7 @@ export class RecipeService {
 
   findOne(id: string): Promise<Recipe> {
     console.log('findOne', id);
-    return { title: 'aaa' } as any;
+    return { title: 'aaa', info: { bbb: 1 } } as any;
   }
 
   update(id: number, updateRecipeInput: UpdateRecipeInput) {

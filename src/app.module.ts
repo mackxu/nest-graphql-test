@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import GraphQLJSON from 'graphql-type-json';
 import { RecipeModule } from './recipe/recipe.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
@@ -13,6 +14,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
       autoSchemaFile: 'auto.schema.gql',
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      resolvers: { JSON: GraphQLJSON },
     }),
     RecipeModule,
   ],
