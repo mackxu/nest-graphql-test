@@ -20,6 +20,7 @@ SDL 是一种在不同平台之间共享模式文件的与语言无关的方式�
 - ResolveField
 - GraphQLDefinitionsFactory
 - Scalar 装饰器指定标量类 CustomScalar
+- InterfaceType 
 
 ApolloServerPluginLandingPageLocalDefault
 
@@ -66,6 +67,37 @@ Nest 提供了两种构建 GraphQL 应用的方法：代码优先和模式优先
 installSubscriptionHandlers 启动订阅
 
 默认类型：Int、Float、String、Boolean 和 ID。自定义原子数据类型（例如，Date）。
+
+## 指令
+
+## 接口 InterfaceType
+
+```ts
+import { Field, ID, InterfaceType } from '@nestjs/graphql';
+
+@InterfaceType()
+export abstract class Character {
+  @Field(() => ID)
+  id: string;
+
+  @Field()
+  name: string;
+}
+
+
+@ObjectType({
+  implements: () => [Character],
+})
+export class Human implements Character {
+  id: string;
+  name: string;
+}
+```
+
+## 中间件
+
+
+
 
 
 

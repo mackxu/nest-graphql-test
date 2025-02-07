@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRecipeInput } from './dto/create-recipe.input';
 import { UpdateRecipeInput } from './dto/update-recipe.input';
-import { Recipe } from './entities/recipe.entity';
+import { Recipe, Color } from './entities/recipe.entity';
 import { RecipesArgs } from './dto/recipes.args';
 
 @Injectable()
@@ -17,7 +17,12 @@ export class RecipeService {
 
   findOne(id: string): Promise<Recipe> {
     console.log('findOne', id);
-    return { title: 'aaa', info: { bbb: 1 }, uid: 123 } as any;
+    return {
+      title: 'aaa',
+      info: { bbb: 1 },
+      uid: '123acdef',
+      favoriteColor: Color.Green,
+    } as any;
   }
 
   update(id: number, updateRecipeInput: UpdateRecipeInput) {

@@ -9,6 +9,7 @@ type Recipe {
   description: String
   info: JSON
   uid: UUID
+  favoriteColor: Color
   creationDate: DateTime!
   ingredients: [String!]!
 }
@@ -20,6 +21,15 @@ scalar JSON
 
 """a simple UUID parse."""
 scalar UUID
+
+"""a simple enum type Color"""
+enum Color {
+  Red @deprecated(reason: "no needed")
+  Green
+
+  """blue color"""
+  Blue
+}
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.

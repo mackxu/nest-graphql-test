@@ -1,6 +1,21 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
 import GraphQLJSON from 'graphql-type-json';
 import { UuidScalar } from 'src/graphql/scalar/uuid';
+
+export enum Color {
+  Red,
+  Green,
+  Blue,
+}
+
+registerEnumType(Color, {
+  name: 'Color',
+  description: 'a simple enum type Color',
+  valuesMap: {
+    Red: { deprecationReason: 'no needed' },
+    Blue: { description: 'blue color' },
+  },
+});
 
 @ObjectType({ description: 'recipe' })
 export class Recipe {
@@ -18,6 +33,9 @@ export class Recipe {
 
   @Field(() => UuidScalar, { nullable: true })
   uid?: string;
+
+  @Field(() => Color, { nullable: true })
+  favoriteColor?: Color;
 
   @Field()
   creationDate: Date;
