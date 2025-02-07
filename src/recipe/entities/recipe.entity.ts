@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import GraphQLJSON from 'graphql-type-json';
+import { UuidScalar } from 'src/graphql/scalar/uuid';
 
 @ObjectType({ description: 'recipe' })
 export class Recipe {
@@ -14,6 +15,9 @@ export class Recipe {
 
   @Field(() => GraphQLJSON, { nullable: true })
   info?: JSON;
+
+  @Field(() => UuidScalar, { nullable: true })
+  uid?: string;
 
   @Field()
   creationDate: Date;

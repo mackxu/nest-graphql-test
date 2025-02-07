@@ -6,6 +6,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import GraphQLJSON from 'graphql-type-json';
 import { RecipeModule } from './recipe/recipe.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { UuidScalar } from './graphql/scalar/uuid';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
       autoSchemaFile: 'auto.schema.gql',
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
-      resolvers: { JSON: GraphQLJSON },
+      resolvers: { JSON: GraphQLJSON, UUID: UuidScalar },
     }),
     RecipeModule,
   ],
