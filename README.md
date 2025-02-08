@@ -96,6 +96,9 @@ export class Human implements Character {
 
 ## 中间件
 
+## 资源
+- [https://graphql.nodejs.cn/learn/](https://graphql.nodejs.cn/learn/)
+
 
 
 
